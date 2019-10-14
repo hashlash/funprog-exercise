@@ -1,9 +1,15 @@
 1 (*). Exercises from chapter 9-10 of The Craft of Functional Programming
 • (*) Define the length function using map and sum.
 
+> length = sum . map (const 1)
+
 • (*) What does map (+1) (map (+1) xs) do? Can you conclude anything in
 general about properties of map f (map g xs), where f and g are arbitrary
 functions?
+
+Applying (f . g) to each element in xs such as:
+
+< map (f.g) xs
 
 • Give the type of, and define the function iter so that
 • iter n f x = f (f (... (f x)))
@@ -12,14 +18,26 @@ should have
 iter 3 f x = f (f (f x))
 and iter 0 f x should return x.
 
+> iter 0 f x = x
+> iter n f x = iter (n-1) f (f x)
+
+< :t iter
+iter :: (Eq a, Num a) => a -> (t -> t) -> t -> t
+
 • What is the type and effect of the following function?
 • \n -> iter n succ
 succ is the successor function, which increases a value by one:
 Prelude> succ 33
 34
 
+< f :: (Enum t, Eq a, Num a) => a -> t -> t
+
+The function add n to its parameter
+
 • (*) How would you define the sum of the squares of the natural numbers 1
 to n using map and foldr?
+
+> squareSum n = foldr (+) 0 $ map (^2) [1..n]
 
 • How does the function
 • mystery xs = foldr (++) [] (map sing xs)
@@ -27,15 +45,24 @@ to n using map and foldr?
 • sing x = [x]
 behave?
 
+Append all element in xs.
+
 • (*) If id is the polymorphic identity function, defined by id x = x, explain the
 behavior of the expressions
 • (id . f) (f . id) (id f)
 If f is of type Int -> Bool, at what instance of its most general type a ->
 a is id used in each case?
 
+The three of it are the same.
+For (id . f) the identity function is applied on the f's output, (f . id) on the
+input, and (id f) is on the function itself.
+
 • Define a function composeList which composes a list of functions into a single
 function. You should give the type of composeList, and explain why the function
 has this type. What is the effect of your function on an empty list of functions?
+
+> composeList [] = id
+> composeList (f:fs) = f . composeList fs
 
 • (*) Define the function
 • flip :: (a -> b -> c) -> (b -> a -> c)
@@ -43,6 +70,8 @@ which reverses the order in which its function argument takes its arguments.
 The following example shows the effect of flip:
 Prelude> flip div 3 100
 33
+
+> flip f x y = f y x
 
 2 (*). List Comprehensions and Higher-Order Functions
 Can you rewrite the following list comprehensions using the higher-order
