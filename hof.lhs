@@ -103,9 +103,20 @@ functions map and filter? You might need the function concat too.
 Can you it the other way around? I.e. rewrite the following expressions as list
 comprehensions.
 1. map (+3) xs
+
+> g1 xs = [ x+3 | x <- xs]
+
 2. filter (>7) xs
+
+> g2 xs = [ x | x <- xs, x > 7]
+
 3. concat (map (\x -> map (\y -> (x,y)) ys) xs)
+
+> g3 xs ys = [ (x,y) | x <- xs, y <- ys]
+
 4. filter (>3) (map (\(x,y) -> x+y) xys)
+
+> g4 xys = [ x+y | (x,y) <- xys, x+y > 3 ]
 
 3 (*). Generating Lists
 Sometimes we want to generate lists of a certain length.
