@@ -77,11 +77,28 @@ Prelude> flip div 3 100
 Can you rewrite the following list comprehensions using the higher-order
 functions map and filter? You might need the function concat too.
 1. [ x+1 | x <- xs ]
+
+> f1 xs = map (+1) xs
+
 2. [ x+y | x <- xs, y <-ys ]
+
+> f2 xs ys = concat $ map (\x -> map (+x) ys) xs
+
 3. [ x+2 | x <- xs, x > 3 ]
+
+> f3 xs = map (+2) $ filter (>3) xs
+
 4. [ x+3 | (x,_) <- xys ]
+
+> f4 xys = map ((+3) . fst) xys
+
 5. [ x+4 | (x,y) <- xys, x+y < 5 ]
-6. [ x+5 | Just x <- mxs ]
+
+> f5 xys = map ((+4) . fst) $ filter ((<5) . uncurry (+)) xys
+
+6. [ x+5 | Just x <- mxs ] ??? TODO !!!
+
+> f6 mxs = map (+5) mxs
 
 Can you it the other way around? I.e. rewrite the following expressions as list
 comprehensions.
